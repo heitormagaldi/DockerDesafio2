@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 5000;
 const config = {
   host: "db",
   user: "root",
@@ -13,13 +13,26 @@ const connection = mysql.createConnection(config);
 let retornoHtml = "<h1>Full Cycle Rocks!</h1> <h2>Pessoas cadastradas</h2>";
 
 let sql = `TRUNCATE TABLE people;`;
-connection.query(sql);
+/*let sql = `CREATE TABLE people( 
+          ID int NOT NULL AUTO_INCREMENT,
+          NAME varchar(255) NOT NULL,
+          PRIMARY KEY (ID));`;
+*/
+try {
+  connection.query(sql);
+} catch (Error) {
+  sql = `CREATE TABLE people( 
+          ID int NOT NULL AUTO_INCREMENT,
+          NAME varchar(255) NOT NULL,
+          PRIMARY KEY (ID));`;
+  connection.query(sql);
+}
 
-sql = `INSERT INTO people(name) values('Heitor Magaldi')`;
+sql = `INSERT INTO people(NAME) values('Heitor Magaldi')`;
 connection.query(sql);
-sql = `INSERT INTO people(name) values('Roberto Carlos')`;
+sql = `INSERT INTO people(NAME) values('Roberto Carlos')`;
 connection.query(sql);
-sql = `INSERT INTO people(name) values('Ronaldinho Gaucho')`;
+sql = `INSERT INTO people(NAME) values('Valeu equipe de Suporte!')`;
 connection.query(sql);
 
 let table = "<table id='tabPeople'><tr><th>ID</th><th>Nome</th></tr>";
@@ -39,7 +52,7 @@ let getEmployeeNames = function () {
 let retorno = getEmployeeNames()
   .then(function (results) {
     results.map((element) => {
-      table += `<tr><td>${element.id}</td><td>${element.name}</td>`;
+      table += `<tr><td>${element.ID}</td><td>${element.NAME}</td>`;
     });
 
     table += "</table>";

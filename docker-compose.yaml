@@ -10,7 +10,8 @@ services:
       - db
     volumes:
       - ./app:/usr/src/app
-    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
+      - /usr/src/app/node_modules #volume anonimo
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s node index.js
     networks:
       - net-app
   nginx:
